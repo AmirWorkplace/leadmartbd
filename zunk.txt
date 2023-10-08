@@ -1,0 +1,5 @@
+
+
+            // return response()->json(empty($shipping_address));
+            // $upozila_id = $shipping_address->upozila_id;!property_exists($shipping_address, 'upozila_id') || !property_exists($shipping_address, 'district_id')
+            // $district_id = $shipping_address->district_id;
