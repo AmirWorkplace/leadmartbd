@@ -18,8 +18,8 @@ class AdminPermission
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {
-        if(Auth::check() && Auth::user()->role == 1){
+    {         
+        if(((Auth::check() && Auth::user()->role == 1) || (Auth::check() && Auth::user()->role == 2))  && Auth::user()->status == 1){
             $currentRouteName = $request->route()->getName();
             $menu = AdminMenu::where('route', $currentRouteName)->first();
             if(!is_null($menu)){

@@ -6,7 +6,7 @@
                   <a href="{{ Route('frontend.home') }}">
                       <img class="logo"
                           src="{{ !is_null($setting) ? asset($setting->logo) : asset('frontend/assets/images/logo/logo.png') }}"
-                          alt="Logo">
+                          alt="Logo" height="70" style="height: 70px;">
                   </a>
               </div>
               <div class="col-lg-9 col-md-8 col-sm-3">
@@ -31,6 +31,14 @@
                           <li class="desktop-menu__item">
                               <a href="#" title="Contact Us"><i
                                       class="fas fa-envelope-open text-xxs"></i>Contact Us</a>
+                          </li>
+                          <li class="desktop-menu__item">
+                              <a href="{{ route('reseller.register') }}" title="Contact Us"><i
+                                      class="fas fa-sign-in-alt text-xxs"></i>Registration</a>
+                          </li>
+                          <li class="desktop-menu__item">
+                              <a href="{{ route('reseller.login') }}" title="Contact Us">
+                                <i class="fas fa-sign-in-alt text-xxs"></i>Login</a>
                           </li>
                       </ul>
                   </nav>

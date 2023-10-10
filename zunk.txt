@@ -1,5 +1,148 @@
 
-
+<div> 
             // return response()->json(empty($shipping_address));
             // $upozila_id = $shipping_address->upozila_id;!property_exists($shipping_address, 'upozila_id') || !property_exists($shipping_address, 'district_id')
             // $district_id = $shipping_address->district_id;
+
+
+
+            // if (is_numeric(request()->email_or_phone)) {
+            //     $column = 'phone';
+            // } elseif (filter_var(request()->email_or_phone, FILTER_VALIDATE_EMAIL)) {
+            //     $column = 'email';
+            // } else {
+            //     return redirect()->back()->withErrors('These credentials do not match our records.')->withInput();
+            // }
+
+            // $remember_me = $request->has('remember_me') ? true : false;
+            // if (auth()->attempt([$column => $request->input('email_or_phone'), 'password' => $request->input('password')], $remember_me)) {
+            //     return redirect()->route('customer.profile')->withSuccessMessage('Logged in Successfully!');
+            // } else {
+            //     return redirect()->back()->withInput($request->all())->withErrors('your email or password is wrong!');
+            // }
+        // if((Auth::check() && Auth::user()->role == 1) || (Auth::check() && Auth::user()->role == 2)){
+        //     return $next($request);
+        // } else {
+        //     return redirect()->route('admin.login.index');
+        // }
+</div>
+
+
+/* Admin Permission Middleware Started */
+  $user = Auth::user();
+
+  if (!$user) {
+      return redirect()->route('admin.login.index');
+  }
+
+  if(Auth::check()) {
+
+      $status = $user->status ? $user->status : redirect()->back()->withSuccessMessage("Please wait for your account approval. Or contact with us!");
+
+      if($status != true) Auth::logout();
+
+      if(($user->role == 1) || ($user->role == 2 && $status == true)){
+          $currentRouteName = $request->route()->getName();
+          $menu = AdminMenu::where('route', $currentRouteName)->first();
+          if(!is_null($menu)){
+              $currentRoutePermission = Permission::findById($menu->permission_id);
+          } else {
+              $menuAction = AdminMenuAction::where('route', $currentRouteName)->first();
+              if($menuAction){
+                  $currentRoutePermission = Permission::findById($menuAction->permission_id);
+              } else {
+                  $currentRoutePermission = NULL;
+              }
+          }
+
+          if (!is_null($currentRoutePermission)) {
+              if (auth()->user()->can($currentRoutePermission->name)) {
+                  return $next($request);
+              } else {
+                  if($request->ajax()){
+                      return response()->json(['status'=>'error']);
+                  }
+                  return redirect()->back()->withErrors('You do not have Access to do this action!');
+              }
+          }
+
+          return $next($request);
+      } else {
+          return redirect()->route('admin.login.index');
+      }
+  } else {
+      redirect()->route('admin.login.index')->withErrors('Please Login First!');
+  } 
+
+/* Admin Permission Middleware Ended */
+
+{{-- <section class="page-title-section">
+  <div class="container">
+      <div class="breadcrumb-title">{{ isset($title)?$title:'Login' }} </div>
+      <ul class="breadcrumb-list">
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ Route('frontend.home') }}">
+                  <span class="breadcrumb-text">Home</span>
+              </a>
+          </li>
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ Route('customer.login') }}">
+                  <span class="breadcrumb-text">User Login</span>
+              </a>
+          </li>
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ Route('reseller.login') }}">
+                  <span class="breadcrumb-text">Reseller Login</span>
+              </a>
+          </li>
+          {{-- @if(isset($category) && isset($category_link))
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ $category_link }}">
+                  <span class="breadcrumb-text">{{ $category }}</span>
+              </a>
+          </li>
+          @endif
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ isset($link) ? $link : '' }}">
+                  <span class="breadcrumb-text">{{ isset($title) ? $title : '' }}</span>
+              </a>
+          </li> -- }}
+      </ul>
+  </div>
+</section>
+<!-- End Page title Section --> --}}{{-- <section class="page-title-section">
+  <div class="container">
+      <div class="breadcrumb-title">{{ isset($title)?$title:'Login' }} </div>
+      <ul class="breadcrumb-list">
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ Route('frontend.home') }}">
+                  <span class="breadcrumb-text">Home</span>
+              </a>
+          </li>
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ Route('customer.login') }}">
+                  <span class="breadcrumb-text">User Login</span>
+              </a>
+          </li>
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ Route('reseller.login') }}">
+                  <span class="breadcrumb-text">Reseller Login</span>
+              </a>
+          </li>
+          {{-- @if(isset($category) && isset($category_link))
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ $category_link }}">
+                  <span class="breadcrumb-text">{{ $category }}</span>
+              </a>
+          </li>
+          @endif
+          <li class="breadcrumb-item">
+              <a class="breadcrumb-link" href="{{ isset($link) ? $link : '' }}">
+                  <span class="breadcrumb-text">{{ isset($title) ? $title : '' }}</span>
+              </a>
+          </li> -- }}
+      </ul>
+  </div>
+</section>
+<!-- End Page title Section --> --}}
+        

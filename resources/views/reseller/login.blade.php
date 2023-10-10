@@ -1,10 +1,10 @@
 @extends('layouts.frontend.app')
 @section('content')
-    @include('components.breadcrumb.login', ["active"=> "customer"])
+    @include('components.breadcrumb.login', ["active"=> "reseller"])
     <section class="login-section py-5 bg-white">
         <div class="container">
             <div class="block-form-login">
-                <div class="account_page_title text-center">User Login</div>
+                <div class="account_page_title text-center">Reseller Login</div>
                 <div class="block-sociallogin text-center mb-4">
                     <div class="title_sociallogin">Login using social network:</div>
                     <a class="btn btn-sociallogin-facebook col">
@@ -13,11 +13,11 @@
                     </a>
                 </div>
                 <p class="text-center title_sociallogin mb-3">Or Insert your account information:</p>
-                <form id="login-form" action="{{ Route('customer.login') }}" method="POST">
+                <form id="login-form" action="{{ Route('reseller.login') }}" method="POST">
                     @csrf
                     <div class="input-group email mb-2">
-                        <input class="form-control" type="text" id="email_or_phone" name="email_or_phone"
-                            placeholder="Email or Phone" value="{{ old('email_or_phone') }}" required>
+                        <input class="form-control" type="text" id="email_or_username" name="email_or_username"
+                            placeholder="Email or Username" value="{{ old('email_or_username') }}" required>
                     </div>
                     <div class="input-group password">
                         <input class="form-control" type="password" id="password" name="password" placeholder="Password"
@@ -41,7 +41,7 @@
                     </div>
                 </form>
                 <div class="no-account">
-                    <a class="fw-500" href="{{ Route('customer.register') }}"> No account? Create one here</a>
+                    <a class="fw-500" href="{{ Route('reseller.register') }}"> No account? Create one here</a>
                 </div>
             </div>
         </div>

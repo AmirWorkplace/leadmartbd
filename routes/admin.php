@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ResellerController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
 
@@ -60,6 +61,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['admin_per
     Route::put('/admin-menu-actions/{id}', [AdminMenuActionController::class, 'update'])->name('admin-menuAction.update');
     Route::delete('/admin-menu-actions/{id}', [AdminMenuActionController::class, 'destroy'])->name('admin-menuAction.destroy');
     Route::get('/admin-menu-actions-status/{id}', [AdminMenuActionController::class, 'status'])->name('admin-menuAction.status');
+
+    // Reseller Management
+    Route::resource('/reseller', ResellerController::class);
+    Route::get('/reseller/{id}/password', [ResellerController::class, 'changePassword'])->name('reseller.password');
+    Route::put('/reseller/password/{id}', [ResellerController::class, 'passwordUpdate'])->name('reseller.password-update');
 
     // Admin Settings Management
     Route::resource('/admin-settings', AdminSettingController::class);

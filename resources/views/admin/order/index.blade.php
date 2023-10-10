@@ -16,7 +16,7 @@
                                 <option value="Confirmed">Confirmed</option>
                                 <option value="Processing">Processing</option>
                                 <option value="Delivered">Delivered</option>
-                                <option value="Successed">Successed</option>
+                                <option value="Successed">Succeed</option>
                                 <option value="Canceled">Canceled</option>
                             </select>
                             <button type="submit" class="btn btn-sm btn-primary px-4">Filter</button>
